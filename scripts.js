@@ -1,5 +1,5 @@
 var DEFAULT_GRID_SIZE   = 16;
-var DEFAULT_HOVER_COLOR = "#fff";
+var DEFAULT_HOVER_COLOR = "#0066FF";
 
 var insertSquares = function(size) {
     var dimension  = 960;
