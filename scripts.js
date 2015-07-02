@@ -6,8 +6,6 @@ var insertSquares = function(size) {
     var squareSize = (960 / size) - 2 // Adjust for border size
     var wrapper    = $( ".wrapper" ).html( "" );
 
-    // clearGrid();
-
     for (i = 0; i < size; i++) {
         for (j = 0; j < size; j++) {
             wrapper.append( $( "<div></div>" ).addClass( "square" )
@@ -17,26 +15,37 @@ var insertSquares = function(size) {
     }
 };
 
-// var clearGrid = function() {
-//     $( ".row" ).remove();
-// }
-
 var resetGrid = function() {
-    $( ".square" ).css("background-color", "#045");
+    $( ".square" ).css( "background-color", "#045" ).css( "opacity", 1 );
 };
 
-
 var customGrid = function() {
-    var newSize = prompt("Please choose how many squares\
-                         you want in the grid:");
+    do {
+        var input = parseInt(prompt("Please provide a value for n (max 80).\n"
+                                  + "Grid will be of dimension n * n.", "", 10));
+    } while (isNaN(input) || input > 80 || input < 1);
 
-    // return newSize;
-    insertSquares(newSize);
+    insertSquares(input);
 }
 
 var randomColor = function() {
     return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
 }
+
+var opacityChangeOnHover = function() {
+    $( ".square" ).mouseenter(function() {
+        var actualOpacity = $( this ).css( "opacity" );
+        var newOpacity    = actualOpacity - 0.1;
+
+        $( this ).css( "opacity", newOpacity );
+    });
+};
+
+var randomChangeOnHover = function() {
+    $( ".square" ).mouseenter(function() {
+        $( this ).css("background-color", randomColor());
+    });
+};
 
 var changeOnHover = function(hexColor) {
     $( ".square" ).mouseenter(function() {
@@ -49,18 +58,26 @@ $( document ).ready(function() {
     changeOnHover(DEFAULT_HOVER_COLOR);
 
     $( "#reset" ).click(function() {
-        // $( ".square" ).unbind();
         resetGrid();
-        // changeOnHover(DEFAULT_HOVER_COLOR);
+        $( ".square" ).unbind();
+        changeOnHover(DEFAULT_HOVER_COLOR);
     });
 
     $ ( "#custom_grid" ).click(function() {
         customGrid();
-        // changeOnHover(DEFAULT_HOVER_COLOR);
+        $( ".square" ).unbind();
+        changeOnHover(DEFAULT_HOVER_COLOR);
     });
 
     $ ( "#random_color" ).click(function() {
         resetGrid();
-        changeOnHover(randomColor());
+        $( ".square" ).unbind();
+        randomChangeOnHover();
+    });
+
+    $ ( "#opacity_color" ).click(function() {
+        resetGrid();
+        $( ".square" ).unbind();
+        opacityChangeOnHover();
     });
 });
