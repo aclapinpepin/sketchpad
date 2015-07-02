@@ -1,4 +1,5 @@
-var DEFAULT_GRID_SIZE = 16;
+var DEFAULT_GRID_SIZE   = 16;
+var DEFAULT_HOVER_COLOR = "#fff";
 
 var insertSquares = function(size) {
     var dimension  = 960;
@@ -16,9 +17,9 @@ var insertSquares = function(size) {
     }
 };
 
-var clearGrid = function() {
-    $( ".row" ).remove();
-}
+// var clearGrid = function() {
+//     $( ".row" ).remove();
+// }
 
 var resetGrid = function() {
     $( ".square" ).css("background-color", "#045");
@@ -29,36 +30,37 @@ var customGrid = function() {
     var newSize = prompt("Please choose how many squares\
                          you want in the grid:");
 
-    return newSize;
-    // insertSquares(newSize);
+    // return newSize;
+    insertSquares(newSize);
 }
 
-var changeOnHover = function() {
+var randomColor = function() {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16);
+}
+
+var changeOnHover = function(hexColor) {
     $( ".square" ).mouseenter(function() {
-        $( this ).css("background-color", "#fff");
+        $( this ).css("background-color", hexColor);
     });
 };
 
 $( document ).ready(function() {
     insertSquares(DEFAULT_GRID_SIZE);
-    changeOnHover();
+    changeOnHover(DEFAULT_HOVER_COLOR);
 
     $( "#reset" ).click(function() {
         // $( ".square" ).unbind();
         resetGrid();
-        changeOnHover();
+        // changeOnHover(DEFAULT_HOVER_COLOR);
     });
 
     $ ( "#custom_grid" ).click(function() {
-        // clearGrid();
-        var size = customGrid();
-        insertSquares(size);
+        customGrid();
+        // changeOnHover(DEFAULT_HOVER_COLOR);
     });
 
-
-    // hover(function() {
-    //     $( this ).addClass( "hover" );
-
-        // css("background-color", "#fff", "!important");
-    // });
+    $ ( "#random_color" ).click(function() {
+        resetGrid();
+        changeOnHover(randomColor());
+    });
 });
